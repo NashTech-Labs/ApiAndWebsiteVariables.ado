@@ -1,0 +1,106 @@
+parameters:
+- name: appDeploymentTarget
+  type: string
+
+- name: key
+  type: string
+
+- name: websiteAppServiceNames
+  type: string
+  default: ''
+
+- name: websiteArchivePattern
+  type: string
+
+- name: websiteExtractFolder
+  type: string
+
+- name: websitePackageId
+  type: string
+
+- name: websitePacakgeVersion
+  type: string
+
+- name: apiAppServiceNames
+  type: string
+
+- name: apiArchivePattern
+  type: string
+
+- name: apiExtractFolder
+  type: string
+
+- name: apiPackageId
+  type: string  
+
+- name: apiPacakgeVersion
+  type: string
+
+- name: websiteImage
+  type: string
+
+- name: websiteAKSApps
+  type: string
+
+- name: websiteAKSAppsForBlueGreen
+  type: string
+
+- name: websiteWorkloadName
+  type: string
+  
+steps:
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AppService'), eq(parameters.key, 'Website-AppServiceMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=Website.appServiceNames]${{ parameters.websiteAppServiceNames }}"
+    name: SetAppServiceList
+    displayName: Set App Service List  
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AppService'), eq(parameters.key, 'Website')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=Website.archivePattern]${{ parameters.websiteArchivePattern }}"
+      "##vso[task.setvariable variable=Website.extractFolder]${{ parameters.websiteExtractFolder }}"
+      "##vso[task.setvariable variable=Website.packageId]${{ parameters.websitePackageId }}"
+      "##vso[task.setvariable variable=Website.pacakgeVersion]${{ parameters.websitePacakgeVersion }}"
+    name: SetAppServiceDeploymentVariables
+    displayName: Set App Service Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AppService'), eq(parameters.key, 'Api-AppServiceMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=Api.appServiceNames]${{ parameters.apiAppServiceNames }}"
+    name: SetAppServiceList
+    displayName: Set App Service List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AppService'), eq(parameters.key, 'Api')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=Api.archivePattern]${{ parameters.apiArchivePattern }}"
+      "##vso[task.setvariable variable=Api.extractFolder]${{ parameters.apiExtractFolder }}"
+      "##vso[task.setvariable variable=Api.packageId]${{ parameters.apiPackageId }}"
+      "##vso[task.setvariable variable=Api.pacakgeVersion]${{ parameters.apiPacakgeVersion }}"
+    name: SetAppServiceDeploymentVariables
+    displayName: Set App Service Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'Website-ImportImage')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=Website.targetContainerRegistry]$(environment.containerRegistry)"
+      "##vso[task.setvariable variable=Website.sourceImage]$(environment.sourceContainerRegistry).azurecr.io/${{ parameters.websiteImage }}"
+      "##vso[task.setvariable variable=Website.targetImage]${{ parameters.websiteImage }}"
+      "##vso[task.setvariable variable=Website.sourceContainerRegistry.SPUserName]$(environment.sourceContainerRegistry.servicePrincipalApplicationId)"
+      "##vso[task.setvariable variable=Website.sourceContainerRegistry.SPPassword]$(environment.sourceContainerRegistry.servicePrincipalClientAuth)"
+    name: SetImportImageVariables
+    displayName: Set Import Image Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'Website-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=Website.aksApps]${{ parameters.websiteAKSApps }}"
+      "##vso[task.setvariable variable=Website.aksAppsForBlueGreen]${{ parameters.websiteAKSAppsForBlueGreen }}"
+      "##vso[task.setvariable variable=Website.workloadName]${{ parameters.websiteWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'Website')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=Website.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=Website.image]$(environment.containerRegistry).azurecr.io/${{ parameters.websiteImage }}"
+      "##vso[task.setvariable variable=Website.workloadName]${{ parameters.websiteWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
