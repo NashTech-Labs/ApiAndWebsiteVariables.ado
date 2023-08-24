@@ -1,7 +1,5 @@
 # ApiAndWebsiteVariables.ado
 
-# StyleApiVariables.ado
-
 
 ## Pipeline Requirements
 
@@ -32,7 +30,7 @@ Paramaters:
 
 
 
-### 2. Direct use of templates
+### Direct use of templates
 
 You can directly call a particular template as per the requirement. for example: 
 
