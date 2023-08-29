@@ -67,7 +67,5 @@ You can directly call a particular template as per the requirement. for example:
 
   ```
 
-The parameters are provided to configure the setVariables pipeline according to the desired build configuration and stages.
-
 Make sure to adjust the repository name, branch name, and parameter values according to your project's requirements.
 
