@@ -81,11 +81,11 @@ steps:
 
 - ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'Website-ImportImage')) }}:
   - pwsh: |
-      "##vso[task.setvariable variable=Website.targetContainerRegistry]$(environment.containerRegistry)"
+      "##vso[task.setvariable variable=Website.targetContainerRegistry]${{ parameters.containerRegistry }}"
       "##vso[task.setvariable variable=Website.sourceImage]$(environment.sourceContainerRegistry).azurecr.io/${{ parameters.websiteImage }}"
       "##vso[task.setvariable variable=Website.targetImage]${{ parameters.websiteImage }}"
-      "##vso[task.setvariable variable=Website.sourceContainerRegistry.SPUserName]$(environment.sourceContainerRegistry.servicePrincipalApplicationId)"
-      "##vso[task.setvariable variable=Website.sourceContainerRegistry.SPPassword]$(environment.sourceContainerRegistry.servicePrincipalClientAuth)"
+      "##vso[task.setvariable variable=Website.sourceContainerRegistry.SPUserName]${{ parameters.servicePrincipalApplicationId)"
+      "##vso[task.setvariable variable=Website.sourceContainerRegistry.SPPassword]${{ parameters.servicePrincipalClientAuth }}"
     name: SetImportImageVariables
     displayName: Set Import Image Variables
 
@@ -99,8 +99,8 @@ steps:
 
 - ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'Website')) }}:
   - pwsh: |
-      "##vso[task.setvariable variable=Website.containerRegistry]$(environment.containerRegistry).azurecr.io"
-      "##vso[task.setvariable variable=Website.image]$(environment.containerRegistry).azurecr.io/${{ parameters.websiteImage }}"
+      "##vso[task.setvariable variable=Website.containerRegistry]${{ parameters.containerRegistry }}.azurecr.io"
+      "##vso[task.setvariable variable=Website.image]${{ parameters.containerRegistry }}.azurecr.io/${{ parameters.websiteImage }}"
       "##vso[task.setvariable variable=Website.workloadName]${{ parameters.websiteWorkloadName }}"
     name: SetAKSDeploymentVariables
     displayName: Set AKS Deployment Variables
