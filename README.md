@@ -3,7 +3,7 @@
 
 ## Pipeline Requirements
 
-The setVariable pipeline requires the following parameters to be defined:
+The pipeline requires the following parameters to be defined:
 Paramaters:
 
 
@@ -23,7 +23,7 @@ Paramaters:
 | websiteWorkloadName | string | | | Optional | |
 | product.name | string | | | Required | |
 
-  These parameters provide multiple use case options for the setvariables templates pipeline, enable/disable flags for the utilization of different templates as per the requirements.
+  These parameters provide multiple use case options for the template, enable/disable flags for the utilization of different templates as per the requirements.
 
 
 ## Use Cases
@@ -48,20 +48,20 @@ You can directly call a particular template as per the requirement. for example:
   - template: frameWork/common/setVariables/SetApiAndWebsiteVariables.yml@Template
       parameters:
          ${{ insert }}: ${{ parameters }}
-         apiAppServiceNames: $(consoles.api.webAppName)
-         apiArchivePattern: consoles-claims-api.$(build.configVersion).*
-         apiExtractFolder: $(build.configVersion)/consoles-claims-api
-         apiPackageId: consoles-claims-api
-         apiPacakgeVersion: $(build.configVersion)
-         websiteAKSApps: claimsstudio-$(claims.consoles.blueGreenEnv)
-         websiteAKSAppsForBlueGreen: claimsstudio-{deploymentSlot}
-         websiteWorkloadName: claimsstudio
-         websiteAppServiceNames: $(consoles.webAppName)
-         websiteArchivePattern: consoles-claims-website.$(build.configVersion).*
-         websiteExtractFolder: $(build.configVersion)/consoles-claims-website
-         websiteImage: claimsstudio:v$(build.configVersion)
-         websitePackageId: consoles-claims-website
-         websitePacakgeVersion: $(build.configVersion)
+         apiAppServiceNames: ${{ parameters.apiAppServiceNames }}
+         apiArchivePattern: ${{ parameters.apiArchivePattern }}
+         apiExtractFolder: ${{ parameters.apiExtractFolder }}
+         apiPackageId: ${{ parameters.apiPackageId }}
+         apiPacakgeVersion: ${{ parameters.apiPacakgeVersion }}
+         websiteAKSApps: ${{ parameters.websiteAKSApps }}
+         websiteAKSAppsForBlueGreen: ${{ parameters.websiteAKSAppsForBlueGreen }}
+         websiteWorkloadName: ${{ parameters.websiteWorkloadName }}
+         websiteAppServiceNames: ${{ parameters.websiteAppServiceNames }}
+         websiteArchivePattern: ${{ parameters.websiteArchivePattern }}
+         websiteExtractFolder: ${{ parameters.websiteExtractFolder }}
+         websiteImage: claimsstudio: ${{ parameters.websiteImage }}
+         websitePackageId: ${{ parameters.websitePackageId }}
+         websitePacakgeVersion: ${{ parameters.websitePacakgeVersion }}
 
 
 
